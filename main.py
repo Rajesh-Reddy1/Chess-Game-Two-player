@@ -25,7 +25,7 @@ class chessboard():
         pieces = ['bR','bN','bB','bK','bQ','bp','wp','wR','wN','wB','wK','wQ']
         for piece in pieces:
             self.images[piece] = p.transform.scale(p.image.load('IMAGES/'+piece+".png"),(self.size,self.size))
-   
+            
     def drawImages(self):
         for r in range(self.dim):
             for c in range(self.dim):
@@ -68,8 +68,8 @@ class chessboard():
                         PlayerClicks = []
 
                     else:
-                           Sqselected = (row,col)
-                           PlayerClicks.append(Sqselected)
+                        Sqselected = (row,col)
+                        PlayerClicks.append(Sqselected)
 
                     if len(PlayerClicks) == 2:
                         move = chessEngine.notations(PlayerClicks[0],PlayerClicks[1],g.board)
