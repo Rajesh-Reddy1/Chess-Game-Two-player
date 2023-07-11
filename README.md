@@ -18,7 +18,7 @@ This is a simple implementation of a chess game using Python and the Pygame libr
 1. Make sure you have Python 3.x installed on your system.
 2. Install the Pygame library by running the following command:
    ```
-   pip install pygame
+   pip install -r requirements.txt
    ```
 3. Clone this repository or download the source code files.
 
