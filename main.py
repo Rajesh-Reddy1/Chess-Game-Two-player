@@ -1,5 +1,5 @@
 import pygame as p
-import ChessEngine, ChessAI
+import ChessEngine
 import sys
 from multiprocessing import Process, Queue
 
@@ -13,39 +13,31 @@ IMAGES = {}
 
 
 def loadImages():
-    """
-    Initialize a global directory of images.
-    This will be called exactly once in the main.
-    """
     pieces = ['wp', 'wR', 'wN', 'wB', 'wK', 'wQ', 'bp', 'bR', 'bN', 'bB', 'bK', 'bQ']
     for piece in pieces:
         IMAGES[piece] = p.transform.scale(p.image.load("images/" + piece + ".png"), (SQUARE_SIZE, SQUARE_SIZE))
 
 
 def main():
-    """
-    The main driver for our code.
-    This will handle user input and updating the graphics.
-    """
     p.init()
     screen = p.display.set_mode((BOARD_WIDTH + MOVE_LOG_PANEL_WIDTH, BOARD_HEIGHT))
     clock = p.time.Clock()
     screen.fill(p.Color("white"))
     game_state = ChessEngine.GameState()
     valid_moves = game_state.getValidMoves()
-    move_made = False  # flag variable for when a move is made
-    animate = False  # flag variable for when we should animate a move
-    loadImages()  # do this only once before while loop
+    move_made = False 
+    animate = False  
+    loadImages()  
     running = True
-    square_selected = ()  # no square is selected initially, this will keep track of the last click of the user (tuple(row,col))
-    player_clicks = []  # this will keep track of player clicks (two tuples)
+    square_selected = ()  
+    player_clicks = []  
     game_over = False
     ai_thinking = False
     move_undone = False
     move_finder_process = None
     move_log_font = p.font.SysFont("Arial", 14, False, False)
-    player_one = True  # if a human is playing white, then this will be True, else False
-    player_two = False  # if a hyman is playing white, then this will be True, else False
+    player_one = True  
+    player_two = True
 
     while running:
         human_turn = (game_state.white_to_move and player_one) or (not game_state.white_to_move and player_two)
@@ -101,22 +93,6 @@ def main():
                         ai_thinking = False
                     move_undone = True
 
-        # AI move finder
-        if not game_over and not human_turn and not move_undone:
-            if not ai_thinking:
-                ai_thinking = True
-                return_queue = Queue()  # used to pass data between threads
-                move_finder_process = Process(target=ChessAI.findBestMove, args=(game_state, valid_moves, return_queue))
-                move_finder_process.start()
-
-            if not move_finder_process.is_alive():
-                ai_move = return_queue.get()
-                if ai_move is None:
-                    ai_move = ChessAI.findRandomMove(valid_moves)
-                game_state.makeMove(ai_move)
-                move_made = True
-                animate = True
-                ai_thinking = False
 
         if move_made:
             if animate:
@@ -147,19 +123,12 @@ def main():
 
 
 def drawGameState(screen, game_state, valid_moves, square_selected):
-    """
-    Responsible for all the graphics within current game state.
-    """
     drawBoard(screen)  # draw squares on the board
     highlightSquares(screen, game_state, valid_moves, square_selected)
     drawPieces(screen, game_state.board)  # draw pieces on top of those squares
 
 
 def drawBoard(screen):
-    """
-    Draw the squares on the board.
-    The top left square is always light.
-    """
     global colors
     colors = [p.Color("white"), p.Color("gray")]
     for row in range(DIMENSION):
@@ -169,9 +138,6 @@ def drawBoard(screen):
 
 
 def highlightSquares(screen, game_state, valid_moves, square_selected):
-    """
-    Highlight square selected and moves for piece selected.
-    """
     if (len(game_state.move_log)) > 0:
         last_move = game_state.move_log[-1]
         s = p.Surface((SQUARE_SIZE, SQUARE_SIZE))
@@ -195,9 +161,7 @@ def highlightSquares(screen, game_state, valid_moves, square_selected):
 
 
 def drawPieces(screen, board):
-    """
-    Draw the pieces on the board using the current game_state.board
-    """
+
     for row in range(DIMENSION):
         for column in range(DIMENSION):
             piece = board[row][column]
@@ -206,10 +170,6 @@ def drawPieces(screen, board):
 
 
 def drawMoveLog(screen, game_state, font):
-    """
-    Draws the move log.
-
-    """
     move_log_rect = p.Rect(BOARD_WIDTH, 0, MOVE_LOG_PANEL_WIDTH, MOVE_LOG_PANEL_HEIGHT)
     p.draw.rect(screen, p.Color('black'), move_log_rect)
     move_log = game_state.move_log
@@ -247,9 +207,6 @@ def drawEndGameText(screen, text):
 
 
 def animateMove(move, screen, board, clock):
-    """
-    Animating a move
-    """
     global colors
     d_row = move.end_row - move.start_row
     d_col = move.end_col - move.start_col
