@@ -33,10 +33,8 @@ def main():
     square_selected = ()  
     player_clicks = []  
     game_over = False
-    ai_thinking = False
     move_undone = False
-    move_finder_process = None
-    move_log_font = p.font.SysFont("Arial", 14, False, False)
+    move_log_font = p.font.SysFont("Chunkfive", 20, False, False)
     player_one = True  
     player_two = True
 
@@ -77,9 +75,6 @@ def main():
                     move_made = True
                     animate = False
                     game_over = False
-                    if ai_thinking:
-                        move_finder_process.terminate()
-                        ai_thinking = False
                     move_undone = True
                 if e.key == p.K_r:  # reset the game when 'r' is pressed
                     game_state = ChessEngine.GameState()
@@ -89,9 +84,6 @@ def main():
                     move_made = False
                     animate = False
                     game_over = False
-                    if ai_thinking:
-                        move_finder_process.terminate()
-                        ai_thinking = False
                     move_undone = True
 
 
