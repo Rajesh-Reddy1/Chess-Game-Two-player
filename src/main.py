@@ -1,5 +1,6 @@
 import pygame as p
 import ChessEngine
+import Moves
 import sys
 from multiprocessing import Process, Queue
 
@@ -15,7 +16,7 @@ IMAGES = {}
 def loadImages():
     pieces = ['wp', 'wR', 'wN', 'wB', 'wK', 'wQ', 'bp', 'bR', 'bN', 'bB', 'bK', 'bQ']
     for piece in pieces:
-        IMAGES[piece] = p.transform.scale(p.image.load("images/" + piece + ".png"), (SQUARE_SIZE, SQUARE_SIZE))
+        IMAGES[piece] = p.transform.scale(p.image.load("src/images/" + piece + ".png"), (SQUARE_SIZE, SQUARE_SIZE))
 
 
 def main():
@@ -58,7 +59,7 @@ def main():
                         square_selected = (row, col)
                         player_clicks.append(square_selected)  # append for both 1st and 2nd click
                     if len(player_clicks) == 2 and human_turn:  # after 2nd click
-                        move = ChessEngine.Move(player_clicks[0], player_clicks[1], game_state.board)
+                        move = Moves.Move(player_clicks[0], player_clicks[1], game_state.board)
                         for i in range(len(valid_moves)):
                             if move == valid_moves[i]:
                                 game_state.makeMove(valid_moves[i])
