@@ -3,8 +3,8 @@ class Move:
     ranks_to_rows = {"1": 7, "2": 6, "3": 5, "4": 4,
                     "5": 3, "6": 2, "7": 1, "8": 0}
     rows_to_ranks = {v: k for k, v in ranks_to_rows.items()}
-    files_to_cols = {"a": 0, "b": 1, "c": 2, "d": 3,
-                    "e": 4, "f": 5, "g": 6, "h": 7}
+    files_to_cols = {"A": 0, "B": 1, "C": 2, "D": 3,
+                    "E": 4, "F": 5, "G": 6, "H": 7}
     cols_to_files = {v: k for k, v in files_to_cols.items()}
 
     def __init__(self, start_square, end_square, board, is_enpassant_move=False, is_castle_move=False):
