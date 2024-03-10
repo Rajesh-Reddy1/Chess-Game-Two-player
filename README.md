@@ -21,6 +21,7 @@ This is a simple implementation of a chess game using Python and the Pygame libr
    pip install -r requirements.txt
    ```
 3. Clone this repository or download the source code files.
+4. Run Main.py in Terminal
 
 ## How to Play
 1. Run the `main.py` file using Python.
